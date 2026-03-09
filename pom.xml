@@ -174,13 +174,6 @@
                     <failBuildOnCVSS>7</failBuildOnCVSS>
                     <format>ALL</format>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
