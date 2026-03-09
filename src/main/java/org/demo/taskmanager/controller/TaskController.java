@@ -1,5 +1,6 @@
 package org.demo.taskmanager.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.demo.taskmanager.dto.task.TaskRequest;
@@ -23,7 +24,7 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<Page<TaskResponse>> getAllTasks(
-            @AuthenticationPrincipal User currentUser,
+            @Parameter(hidden = true) @AuthenticationPrincipal User currentUser,
             @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
         return ResponseEntity.ok(taskService.getTasksByUser(currentUser, pageable));
     }
@@ -31,14 +32,14 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> getTask(
             @PathVariable Long id,
-            @AuthenticationPrincipal User currentUser) {
+            @Parameter(hidden = true) @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(taskService.getTaskById(id, currentUser));
     }
 
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(
             @Valid @RequestBody TaskRequest request,
-            @AuthenticationPrincipal User currentUser) {
+            @Parameter(hidden = true) @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(request, currentUser));
     }
 
@@ -46,14 +47,14 @@ public class TaskController {
     public ResponseEntity<TaskResponse> updateTask(
             @PathVariable Long id,
             @Valid @RequestBody TaskRequest request,
-            @AuthenticationPrincipal User currentUser) {
+            @Parameter(hidden = true) @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(taskService.updateTask(id, request, currentUser));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable Long id,
-            @AuthenticationPrincipal User currentUser) {
+            @Parameter(hidden = true) @AuthenticationPrincipal User currentUser) {
         taskService.deleteTask(id, currentUser);
         return ResponseEntity.noContent().build();
     }
