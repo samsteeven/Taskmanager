@@ -11,14 +11,24 @@ import org.demo.taskmanager.model.User;
 import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
+
+        // 
 @Configuration
 public class OpenApiConfig {
 
     static {
-        // Ignorer l'entité User pour éviter les récursions infinies lors de la génération OpenAPI
-        // via l'annotation @AuthenticationPrincipal
-        SpringDocUtils.getConfig().addRequestWrapperToIgnore(User.class);
+        // Ignorer les types liés à la sécurité pour éviter les erreurs d'introspection
+        SpringDocUtils.getConfig()
+                .addRequestWrapperToIgnore(User.class)
+                .addRequestWrapperToIgnore(Principal.class)
+                .addRequestWrapperToIgnore(Authentication.class)
+                .addRequestWrapperToIgnore(UserDetails.class)
+                .addRequestWrapperToIgnore(GrantedAuthority.class);
     }
 
     @Bean

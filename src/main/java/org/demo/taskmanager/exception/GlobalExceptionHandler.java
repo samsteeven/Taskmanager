@@ -1,6 +1,7 @@
 package org.demo.taskmanager.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Cela évite d'avoir du code de gestion d'erreurs dans chaque contrôleur.
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -56,6 +58,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
+        log.error("Internal Server Error: ", ex);
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur interne s'est produite.", null);
     }
 
