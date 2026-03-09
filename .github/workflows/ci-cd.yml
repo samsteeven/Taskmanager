@@ -2,9 +2,9 @@ name: TaskManager CI/CD Pipeline
 
 on:
     push:
-        branches: [main]
+        branches: [master, develop]
     pull_request:
-        branches: [main]
+        branches: [master, develop]
 
 jobs:
     build-and-test:
@@ -24,7 +24,7 @@ jobs:
 
             - name: SonarQube Analysis
               env:
-                #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=samsteeven_taskmanager
 
@@ -33,7 +33,7 @@ jobs:
 
     docker-build-push:
         needs: build-and-test
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
